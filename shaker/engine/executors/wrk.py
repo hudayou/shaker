@@ -57,7 +57,12 @@ class WrkExecutor(base.BaseExecutor):
                 result,
                 'wrk returned no data, stderr: %s' % result['stderr'])
 
-        data = json.loads(stdout)
+        try:
+            data = json.loads(stdout)
+        except:
+            raise base.ExecutorException(
+                result,
+                'wrk returned malformed json data, stdout: %s' % stdout)
 
         meta = [
             ['time', 's'],
