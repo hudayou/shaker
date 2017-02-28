@@ -18,6 +18,8 @@ from hdrh.histogram import HdrHistogram
 
 from shaker.engine.executors import base
 
+WRK_EXEC = '%s 2>&1 > /tmp/wrk.json && cat /tmp/wrk.json'
+
 
 def convert_rx_bps_to_number(rx_bps):
     multiplier = 1024.0
@@ -46,7 +48,8 @@ class WrkExecutor(base.BaseExecutor):
                                    'http',
                                    self.test_definition.get('host') or
                                    self.agent['slave']['ip']))
-        return cmd.make()
+        wrk_cmd = cmd.make()
+        return base.Script(WRK_EXEC % wrk_cmd['data']).make()
 
     def process_reply(self, message):
         result = super(WrkExecutor, self).process_reply(message)
