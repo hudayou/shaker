@@ -21,6 +21,7 @@ AGGREGATORS = {
     'iperf_graph': traffic.TrafficAggregator,
     'iperf3': traffic.TrafficAggregator,
     'flent': traffic.TrafficAggregator,
+    'wrk': traffic.TrafficAggregator,
     '_default': base.BaseAggregator,
 }
 
