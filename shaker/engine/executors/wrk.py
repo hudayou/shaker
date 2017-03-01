@@ -44,6 +44,7 @@ class WrkExecutor(base.BaseExecutor):
         cmd.add('-R', self.test_definition.get('rate') or 10)
         cmd.add('-p', self.test_definition.get('interval') or 1)
         cmd.add('-e')
+        cmd.add('-B')
         cmd.add('{0}://{1}'.format(self.test_definition.get('protocol') or
                                    'http',
                                    self.test_definition.get('host') or
