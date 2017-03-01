@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import json
-from hdrh.histogram import HdrHistogram
 
 from shaker.engine.executors import base
 
@@ -43,7 +42,7 @@ class WrkExecutor(base.BaseExecutor):
         cmd.add('-t', self.test_definition.get('threads') or 2)
         cmd.add('-R', self.test_definition.get('rate') or 10)
         cmd.add('-p', self.test_definition.get('interval') or 1)
-        cmd.add('-e')
+        cmd.add('-j')
         cmd.add('-B')
         cmd.add('{0}://{1}'.format(self.test_definition.get('protocol') or
                                    'http',
@@ -77,11 +76,8 @@ class WrkExecutor(base.BaseExecutor):
         interval = self.test_definition.get('interval') or 1
         for i, d in enumerate(data):
             line = [interval * i]
-            h = HdrHistogram.decode(data[i].get(
-                'hist',
-                'HISTFAAAABh4nJNpmSzMgABMUJoRTJq9a4DxAUGXAu8='
-            ))
-            line.append(h.get_mean_value()/1000.0)
+            latency = data[i].get('latency', 0.0)
+            line.append(float(latency)/1000.0)
             line.append(data[i].get('rps', 0.0))
             samples.append(line)
 
